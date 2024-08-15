@@ -5,4 +5,6 @@ According to the given code, following can be inferred:
 2. Destination: ThingsSpeak
 3. Trigger Event: DHT22 sensor
 
-Note: The give code is made with the help of MathWorks source code file WriteMultipleFields which is improvised to inculcate the changes in the temperature and humidity of the surroundings and then upload the data the IoT platform service (ThingsSpeak).
+Note: The give code is made with the help of MathWorks source code file WriteMultipleFields which is improvised to inculcate the changes in the temperature and humidity of the surroundings and then upload the data the IoT platform service (ThingsSpeak).\
+\
+Another curcial part of this code is a Secrets.h file that contains the information of the SSID key and password for wifi-connectionn as well as API key for writing values into the fields present on the ThingsSpeak channel. That file is not attached to this code as it contains confidential information.
