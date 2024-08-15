@@ -1,26 +1,3 @@
-/*
-  WriteMultipleFields
-  
-  Description: Writes values to fields 1,2,3,4 and status in a single ThingSpeak update every 20 seconds.
-  
-  Hardware: Arduino MKR1000
-  
-  !!! IMPORTANT - Modify the secrets.h file for this project with your network connection and ThingSpeak channel details. !!!
-  
-  Note:
-  - Requires WiFi101 library version 0.15.3 or newer.
-  - This example is written for a network using WPA encryption. For WEP or WPA, change the WiFi.begin() call accordingly.
-  
-  ThingSpeak ( https://www.thingspeak.com ) is an analytic IoT platform service that allows you to aggregate, visualize, and 
-  analyze live data streams in the cloud. Visit https://www.thingspeak.com to sign up for a free account and create a channel.  
-  
-  Documentation for the ThingSpeak Communication Library for Arduino is in the README.md folder where the library was installed.
-  See https://www.mathworks.com/help/thingspeak/index.html for the full ThingSpeak documentation.
-  
-  For licensing information, see the accompanying license file.
-  
-  Copyright 2020, The MathWorks, Inc.
-*/
 #include "DHT.h"
 
 #define DHTPIN 2     // Digital pin connected to the DHT sensor
@@ -35,11 +12,7 @@ WiFiClient  client;
 unsigned long myChannelNumber = SECRET_CH_ID;
 const char * myWriteAPIKey = SECRET_WRITE_APIKEY;
 
-// Initialize our values
-int t = 0;
-int h = 0;
-
-#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
+#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321 - DHT22 sensor has a higher range as compared to DHT11.
 
 DHT dht(DHTPIN, DHTTYPE);
 void setup() {
@@ -66,7 +39,7 @@ void loop() {
     } 
     Serial.println("\nConnected.");
   }
-  delay(1000);
+  delay(1000); // After being successfully connected, wait for one second before reading humidity and temperature from the DHT22 sensor.
   float h = dht.readHumidity();
   // Read temperature as Celsius (the default)
   float t = dht.readTemperature();
@@ -78,7 +51,7 @@ void loop() {
     return;
   }
 
-
+// Results will be printed on the serial monitor for cross-verifying.
   Serial.print(F("Humidity: "));
   Serial.print(h);
   Serial.print(F("%  Temperature: "));
@@ -91,7 +64,6 @@ void loop() {
   ThingSpeak.setField(2, h);
 
 
-  delay(60000);
   // write to the ThingSpeak channel 
   int x = ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
   if(x == 200){
@@ -104,5 +76,5 @@ void loop() {
 
 
   
-  delay(10000); // Wait 20 seconds to update the channel again
+  delay(60000); // Wait 60 seconds to update the channel. So, the values of temperature and humidity in thingsspeak dashboard will change after 60 seconds only.
 }
